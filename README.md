@@ -86,11 +86,6 @@ TCP Socket
 
 
 
-markdown
-
-코드 복사
-
-
 
 \### Design Points
 
@@ -133,12 +128,6 @@ worker/
 ├─ workerManager.h / workerManager.cpp
 
 └─ FieldWorker.h / FieldWorker.cpp
-
-
-
-yaml
-
-코드 복사
 
 
 
@@ -188,11 +177,6 @@ Grid / Sector 기반 AOI 관리 구조를 사용합니다.
 
 
 
-yaml
-
-코드 복사
-
-
 
 \- AOI 범위: S5 + 인접 8개 섹터
 
@@ -228,10 +212,6 @@ net/
 
 
 
-yaml
-
-코드 복사
-
 
 
 ---
@@ -258,11 +238,6 @@ storage/
 
 └─ DBWorker.h / DBWorker.cpp
 
-
-
-yaml
-
-코드 복사
 
 
 
@@ -364,9 +339,6 @@ rl/ : 강화학습 코드 (Python)
 
 
 
-yaml
-
-코드 복사
 
 
 
@@ -427,12 +399,6 @@ yaml
 config/
 
 └─ server\_config.sample.json
-
-
-
-yaml
-
-코드 복사
 
 
 
