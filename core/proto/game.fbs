@@ -1,0 +1,85 @@
+namespace game;
+
+struct Vec2 {
+  x:float;
+  y:float;
+}
+
+enum MsgType:ubyte {
+  NONE = 0,
+  Ping = 1,
+  Login = 2,
+  EnterField = 3,
+  LoginAck = 4,
+  EnterFieldAck = 5,
+  SkillCmd = 6,
+  SkillCmdAck = 7
+}
+
+table Ping {
+  client_time_ms:ulong;
+}
+
+table Login {
+  user_id:string;
+  token:string;
+}
+
+table LoginAck {
+  ok:bool;
+  player_id:ulong;
+  user_id:string;
+  default_field_id:int;
+}
+
+table EnterField {
+  field_id:uint;
+}
+
+table EnterFieldAck {
+  field_id:uint;
+  player_id:ulong;
+}
+
+// === 스킬 관련 ===
+enum SkillType : byte {
+  NormalAttack = 0,
+}
+
+// 에러 코드
+enum SkillError : byte {
+  None = 0,
+  OutOfRange = 1,
+  Cooldown = 2,
+  InvalidTarget = 3,
+  InvalidState = 4
+}
+
+table SkillCmd {
+  skill: SkillType;
+  targetId: ulong;
+}
+
+table SkillCmdAck {
+  skill: SkillType;
+  targetId: ulong;
+  ok: bool = true;
+  error: SkillError = None;
+}
+
+// === union ===
+union Packet {
+  Ping,
+  Login,
+  EnterField,
+  LoginAck,
+  EnterFieldAck,
+  SkillCmd,
+  SkillCmdAck
+}
+
+table Envelope {
+  pkt:Packet;
+}
+
+root_type Envelope;

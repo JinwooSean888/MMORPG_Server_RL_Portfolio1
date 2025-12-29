@@ -1,0 +1,20 @@
+ef{
+  "redis": {
+    "host": "127.0.0.1",
+    "port": 6379,
+    "timeout_ms": 200
+  },
+  "mysql": {
+    "host": "127.0.0.1",
+    "port": 3306,
+    "user": "root",
+    "pass": "pass",
+    "db": "game",
+    "charset": "utf8mb4"
+  },
+  "storage": {
+    "flush_interval_ms": 2000,
+    "db_max_queue": 32,
+    "max_batch_uids": 2000
+  }
+}

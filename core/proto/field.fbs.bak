@@ -1,0 +1,107 @@
+namespace field;
+
+//--------------------------------------
+// 공통 enum들
+//--------------------------------------
+enum FieldCmdType : byte {
+  Enter = 0,
+  Leave = 1,
+  Move  = 2
+}
+
+enum EntityType : byte {
+  Player  = 0,
+  Monster = 1,
+  Npc     = 2
+}
+
+enum AiStateType : byte {
+  Idle   = 0,
+  Patrol = 1,
+  Move   = 2,
+  Attack = 3,
+  Return = 4,
+  Dead   = 5  
+}
+
+//--------------------------------------
+// 2D 벡터
+//--------------------------------------
+table Vec2 {
+  x: float;
+  y: float;
+}
+
+//--------------------------------------
+// 필드 명령 (이동/입장/퇴장 등)
+//  - 스폰/이동/퇴장 같은 "행동" 정보만 담고
+//    스탯 정보는 StatEvent 에서 별도로 내려준다.
+//--------------------------------------
+table FieldCmd {
+  type:       FieldCmdType;
+  entityType: EntityType = Player;
+  entityId:   ulong;
+
+  pos:        Vec2;
+  dir:        Vec2;
+
+  // 클라에서 어떤 프리팹 쓸지 결정용
+  prefab:     string;
+}
+
+//--------------------------------------
+// 전투 이벤트 (피격/데미지 등)
+//  - 누가 누구를 얼마나 때렸는지 "로그" 위주
+//  - 실제 HP/SP 숫자는 StatEvent 로 별도로 내려줌
+//--------------------------------------
+table CombatEvent {
+  attackerType: EntityType = Player;
+  attackerId:   ulong;
+
+  targetType:   EntityType = Player;
+  targetId:     ulong;
+
+  damage:       int;
+  remainHp:     int;   // 필요 없으면 0으로 둬도 되고, 디버깅용으로 유지 가능
+}
+
+//--------------------------------------
+// AI 상태 변경 이벤트 (몬스터 FSM 동기화)
+//--------------------------------------
+table AiStateEvent {
+  entityType: EntityType = Monster;
+  entityId:   ulong;
+  state:      AiStateType;
+}
+
+//--------------------------------------
+// 능력치 변경 이벤트 (HUD용 스냅샷)
+//  - HP/SP 가 바뀔 때마다 전체 값 내려주기
+//  - 클라는 이 값으로 그대로 덮어쓰면 됨
+//--------------------------------------
+table StatEvent {
+  entityType: EntityType;
+  entityId:   ulong;
+
+  hp:         int;
+  maxHp:      int;
+  sp:         int;
+  maxSp:      int;
+}
+
+//--------------------------------------
+// 필드용 공통 Envelope
+//--------------------------------------
+union Packet {
+  FieldCmd,
+  CombatEvent,
+  AiStateEvent,
+  StatEvent
+}
+
+table Envelope {
+  pkt: Packet;
+}
+
+// 이 파일의 기본 루트는 Envelope
+root_type Envelope;
